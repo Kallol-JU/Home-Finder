@@ -1,0 +1,5 @@
+the init folder is for data initialisation. if i want to empty the database i simply dlt the init folder, or i mean obviously can clear the db.
+
+if any func is doing anything with the db it is an async function
+
+by form only get and post reqs can be sent, 
