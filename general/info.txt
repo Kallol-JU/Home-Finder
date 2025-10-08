@@ -3,3 +3,19 @@ the init folder is for data initialisation. if i want to empty the database i si
 if any func is doing anything with the db it is an async function
 
 by form only get and post reqs can be sent, 
+
+ejsmate helps to get rid of the same code , like website's navbar and footers, which are 
+almost similar in every pages, by ejsmate we eliminate the repeatitive code.
+
+for ejsmate syntax :
+ <div class="container">
+        <%- body %>
+</div>
+this means i only want to change the body rest i want to leave as this file, means boilerplate.ejs is
+
+and for normal page, in which i want to show the content , that syntax is
+<% layout("./layouts/boilerplate.ejs") %>
+means where the layout resides.
+
+we created includes inside the views folder, to actually make our code more modular
+means, there is a seperate navbar file, a seperate footer, etc.

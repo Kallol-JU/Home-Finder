@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 require('dotenv').config();
 const path = require("path"); //for ejs
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 //now i am requiring the model from models folder
 const Listing = require("./models/listing.js")
@@ -26,6 +27,8 @@ app.set("view engine" , "ejs"); //for ejs
 app.set("views" , path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true}));// so that the data is coming from req is get parsed
 app.use(methodOverride("_method"));
+app.engine("ejs" , ejsMate);
+app.use(express.static(path.join(__dirname,"/public"))); // for serving static files
 
 //creating basic api
 app.get("/", (req,res)=>{
