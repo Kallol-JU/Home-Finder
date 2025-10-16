@@ -1,6 +1,8 @@
 const { ref } = require("joi");
 const mongoose = require("mongoose");
+const { listSearchIndexes } = require("./review");
 const Schema = mongoose.Schema;
+const Review = require("./review.js");
 
 const listingSchema = new Schema({
     title : {
@@ -38,6 +40,12 @@ const listingSchema = new Schema({
         }
     ]
 });
+
+listingSchema.post("findOneAndDelete" , async(listing)=> {
+    if(listing) {
+        await Review.deleteMany({_id : {$in : listing.reviews}});
+    }
+})
 
 //now using this schema we are going to create a model
 const Listing = mongoose.model("Listing" , listingSchema);
