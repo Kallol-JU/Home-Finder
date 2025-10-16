@@ -58,14 +58,17 @@ body{
 
 .fa-square-instagram:hover{
     transform: scale(1.1);
+    cursor: pointer;
 }
 
 .fa-square-x-twitter:hover{
     transform: scale(1.1);
+    cursor: pointer;
 }
 
 .fa-square-linkedin:hover{
     transform: scale(1.1);
+    cursor: pointer;
 }
 
 .f-info-links a{
