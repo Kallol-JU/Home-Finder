@@ -14,11 +14,10 @@ const listingSchema = new Schema({
         required : true,
     },
     image : {
-        filename: String,
         url : {
             type : String,
-            default: "https://unsplash.com/photos/historic-lodge-nestled-among-pine-trees-with-mountains-behind-DEgeMwdOfK8",
-            set: (v) => v ==="" ?"https://unsplash.com/photos/historic-lodge-nestled-among-pine-trees-with-mountains-behind-DEgeMwdOfK8" : v,
+            default: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=center",
+            set: (v) => v === "" ? "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=center" : v,
         },
     },
     price :{

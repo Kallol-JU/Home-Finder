@@ -9,6 +9,10 @@ const ejsMate = require("ejs-mate");
 const expressError = require("./utils/expressError.js");
 const listRoute = require("./routes/listing.js");
 const reviewRoute  =require("./routes/review.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+
+
 
 const MONGO_URL = process.env.MONGO_URL;
 
@@ -30,10 +34,30 @@ app.use(methodOverride("_method"));
 app.engine("ejs" , ejsMate);
 app.use(express.static(path.join(__dirname,"/public"))); // for serving static files
 
+
+const sessionOptions = {
+  secret : "kallolSDE@Google",
+  resave : false, 
+  saveUninitialized : true,
+  cookie : {
+    expires : Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge : 7 * 24 * 60 * 60 * 1000,
+    httpOnly : true,
+  }
+}
+
 //creating basic api
 app.get("/", (req,res)=>{
     res.send("hi, i am root page");
 });
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+app.use((req,res,next) =>{
+  res.locals.success = req.flash("success");// this creates a variable named success and in the index page, at top we paste that success
+  next();
+})
 
 //for /lisitings
 app.use("/listings" , listRoute);

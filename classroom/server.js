@@ -17,26 +17,28 @@ app.use(session({
 
 app.use(flash());
 
+app.use((req,res,next) =>{
+    res.locals.successMsg = req.flash("success");
+    res.locals.errorMsg = req.flash("error");
+    next();
+})
+
 app.get("/register" , (req,res)=>{
     let {name = "anoynymous"} = req.query;
     req.session.name = name;
-    req.flash("success" , "Worked!! Woooo Hooooooo");
+   
+    if(name === "anoynymous"){
+        req.flash("error" , "User not registered");
+    }else{
+        req.flash("success" , "User registered");
+    }
+
     res.redirect("/hello");
 })
 
 app.get("/hello" , (req,res)=>{
-
-    res.render("index.ejs" , {name : req.session.name , msg:req.flash("success")});
+    res.render("index.ejs" , {name : req.session.name });
 })
-
-// app.get("/reqcount" , (req,res)=>{
-//     if(req.session.count) {
-//         req.session.count ++;
-//     }else{
-//         req.session.count = 1;
-//     }
-//     res.send(`Hi, you have sent req ${req.session.count} times`);
-// })
 
 
 app.get("/" , (req,res)=>{
