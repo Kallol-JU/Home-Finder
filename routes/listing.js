@@ -35,6 +35,10 @@ router.get("/new" , (req,res)=>{
 router.get("/:id" ,wrapAsync( async (req,res)=> {
     let {id} = req.params;
     const listing = await Listing.findById(id).populate("reviews");
+    if(!listing) {
+        req.flash("error" , "The listing has been deleted , can't access now!");
+        return res.redirect("/listings");
+    }
     res.render("./listings/show.ejs" , {listing});
 }))
 
@@ -50,6 +54,10 @@ router.post("/" , validateListing, wrapAsync(async (req,res)=>{ //this is async 
 router.get("/:id/edit", async (req,res)=>{
     let {id} = req.params;
     const listing = await Listing.findById(id);
+    if(!listing) {
+        req.flash("error" , "The listing has been deleted , can't access now!");
+        return res.redirect("/listings");
+    }
     res.render("./listings/edit.ejs" , {listing});
 })
 
@@ -57,6 +65,7 @@ router.get("/:id/edit", async (req,res)=>{
 router.put("/:id" , validateListing , async (req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
+    req.flash("success" , "Listing has been edited successfully");
     res.redirect("/listings");
 })
 
@@ -64,6 +73,7 @@ router.put("/:id" , validateListing , async (req,res)=>{
 router.delete("/:id", wrapAsync(async(req,res)=> {
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("success" , "Listing has been deleted successfully");
     res.redirect("/listings");
 }))
 

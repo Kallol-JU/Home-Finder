@@ -54,8 +54,16 @@ app.get("/", (req,res)=>{
 app.use(session(sessionOptions));
 app.use(flash());
 
+
+//for success
 app.use((req,res,next) =>{
   res.locals.success = req.flash("success");// this creates a variable named success and in the index page, at top we paste that success
+  next();
+})
+
+//for error
+app.use((req,res,next)=>{
+  res.locals.error = req.flash("error");
   next();
 })
 
