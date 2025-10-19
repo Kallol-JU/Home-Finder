@@ -7,11 +7,14 @@ const path = require("path"); //for ejs
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const expressError = require("./utils/expressError.js");
-const listRoute = require("./routes/listing.js");
-const reviewRoute  =require("./routes/review.js");
+const listRouter = require("./routes/listing.js");
+const reviewRouter  =require("./routes/review.js");
+const userRouter = require("./routes/user.js");
 const session = require("express-session");
 const flash = require("connect-flash");
-
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const User = require("./models/user.js");
 
 
 const MONGO_URL = process.env.MONGO_URL;
@@ -51,9 +54,15 @@ app.get("/", (req,res)=>{
     res.send("hi, i am root page");
 });
 
+//first defining session, then only i can implement passport
 app.use(session(sessionOptions));
 app.use(flash());
-
+//implementing passport, see npm passport for more documentation or gpt..
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //for success
 app.use((req,res,next) =>{
@@ -67,11 +76,24 @@ app.use((req,res,next)=>{
   next();
 })
 
+//testing the passport 
+// app.use("/demo",async (req,res)=> {
+//   let fakeUser = new User({
+//     email : "abc@gmail.com",
+//     username : "kallol",
+//   })
+//   let regUser = await User.register(fakeUser, "kallol");
+//   res.send(regUser);
+// })
+
 //for /lisitings
-app.use("/listings" , listRoute);
+app.use("/listings" , listRouter);
 
 //for reviews
-app.use("/listings/:id/reviews" , reviewRoute);
+app.use("/listings/:id/reviews" , reviewRouter);
+
+//for user
+app.use("/" ,userRouter);
 
 app.use( (req,res,next)=>{
     next(new expressError(404 , "Page Not Found!"));
