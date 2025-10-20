@@ -19,3 +19,6 @@ means where the layout resides.
 
 we created includes inside the views folder, to actually make our code more modular
 means, there is a seperate navbar file, a seperate footer, etc.
+
+
+init means initialisation of db, shortly db.

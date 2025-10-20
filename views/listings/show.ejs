@@ -12,24 +12,27 @@
         <img src="<%= listing.image.url %>" class="card-img-top show-img mb-1" alt="<%= listing.title %>'s image">
         <div class="card-body">
             <p class="card-text">
-                <b> <%= listing.title %> </b> <br>
-                <%=listing.description %> <br>
-                &#8377; <%= listing.price.toLocaleString("en-IN") %> <br>
-                <%=listing.location %> <br>
-                <%= listing.country %>
+                <p class="card-text">Owned by <b> <%= listing.owner.username %> </b> </p> 
+                <p class="card-text"><b> <%= listing.title %> </b> </p> 
+                <p class="card-text"><%=listing.description %></p>
+                <p class="card-text">&#8377; <%= listing.price.toLocaleString("en-IN") %> </p>
+                <p class="card-text"><%=listing.location %>  </p>
+                <p class="card-text"> <%= listing.country %> </p>
             </p>
         </div>
     </div>
     <br>
     </div>
-
-    <div class="btns">
+    
+        <% if (currUser && currUser._id.equals(listing.owner._id)) { %>
+        <div class="btns">
         <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark add-btn col-1 offset-2">Edit</a>
-    <br>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-        <button class="btn btn-dark offset-4">Delete</button>
-    </form>
-    </div>
+        <br>
+        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+            <button class="btn btn-dark offset-4">Delete</button>
+        </form>
+        </div>
+        <% } %>
 
 
 <!-- review section creating -->

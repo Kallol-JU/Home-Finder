@@ -4,6 +4,7 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const expressError = require("../utils/expressError.js");
 const {listingSchema , reviewSchema} = require("../schema.js");
 const Listing = require("../models/listing.js");
+const { isLoggedIn } = require("../middleware.js");
 
 
 //function using joi for listing validation
@@ -27,14 +28,14 @@ router.get("/" , wrapAsync(async(req,res)=>{
 
 
 //new route
-router.get("/new" , (req,res)=>{
+router.get("/new" , isLoggedIn , (req,res)=>{
     res.render("./listings/new.ejs");
 }) //new is written after show route but put upper bcs if not put upper, then the app would consider new as id, and throw err
 
 //show route
 router.get("/:id" ,wrapAsync( async (req,res)=> {
     let {id} = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id).populate("reviews").populate("owner");
     if(!listing) {
         req.flash("error" , "The listing has been deleted , can't access now!");
         return res.redirect("/listings");
@@ -43,15 +44,16 @@ router.get("/:id" ,wrapAsync( async (req,res)=> {
 }))
 
 //create route
-router.post("/" , validateListing, wrapAsync(async (req,res)=>{ //this is async func bcs we are adding in the db
+router.post("/" , isLoggedIn, validateListing, wrapAsync(async (req,res)=>{ //this is async func bcs we are adding in the db
         const newListing = new Listing(req.body.listing);
+        newListing.owner = req.user._id;
         await newListing.save();
         req.flash("success" , "New Listing has been created successfully");
         res.redirect("/listings");
 }))
 
 //edit route
-router.get("/:id/edit", async (req,res)=>{
+router.get("/:id/edit", isLoggedIn , async (req,res)=>{
     let {id} = req.params;
     const listing = await Listing.findById(id);
     if(!listing) {
@@ -62,7 +64,7 @@ router.get("/:id/edit", async (req,res)=>{
 })
 
 //update route
-router.put("/:id" , validateListing , async (req,res)=>{
+router.put("/:id" , isLoggedIn, validateListing , async (req,res)=>{
     let {id} = req.params;
     await Listing.findByIdAndUpdate(id, {...req.body.listing});
     req.flash("success" , "Listing has been edited successfully");
@@ -70,7 +72,7 @@ router.put("/:id" , validateListing , async (req,res)=>{
 })
 
 //delete route
-router.delete("/:id", wrapAsync(async(req,res)=> {
+router.delete("/:id", isLoggedIn , wrapAsync(async(req,res)=> {
     let {id} = req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success" , "Listing has been deleted successfully");

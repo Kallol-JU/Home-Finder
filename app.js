@@ -73,18 +73,9 @@ app.use((req,res,next) =>{
 //for error
 app.use((req,res,next)=>{
   res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
   next();
 })
-
-//testing the passport 
-// app.use("/demo",async (req,res)=> {
-//   let fakeUser = new User({
-//     email : "abc@gmail.com",
-//     username : "kallol",
-//   })
-//   let regUser = await User.register(fakeUser, "kallol");
-//   res.send(regUser);
-// })
 
 //for /lisitings
 app.use("/listings" , listRouter);
