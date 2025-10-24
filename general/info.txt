@@ -22,3 +22,5 @@ means, there is a seperate navbar file, a seperate footer, etc.
 
 
 init means initialisation of db, shortly db.
+
+enctype="multipart/form-data" ; it is form sending images.
