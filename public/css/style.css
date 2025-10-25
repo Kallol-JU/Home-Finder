@@ -96,12 +96,16 @@ body{
 .listing-card {
     border: none !important;
     margin-bottom: 2rem;
+    overflow: hidden !important;
+    border-radius: 1rem !important;
 }
 
 .card-img-top {
     border-radius: 1rem !important;
     width: 100% !important;
+    height: 20rem !important;
     object-fit: cover !important;
+    object-position: center !important;
 }
 
 .card-body{
@@ -141,4 +145,11 @@ body{
 
 .btns{
     display: flex;
+}
+
+/* map-styling */
+#map { 
+    height : 400px;
+    width : 100%;
+    border-radius: 8px; 
 }
