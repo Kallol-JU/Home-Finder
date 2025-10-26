@@ -50,9 +50,9 @@ const sessionOptions = {
 }
 
 //creating basic api
-app.get("/", (req,res)=>{
-    res.send("hi, i am root page");
-});
+// app.get("/", (req,res)=>{
+//     res.send("hi, i am root page");
+// });
 
 //first defining session, then only i can implement passport
 app.use(session(sessionOptions));
