@@ -6,10 +6,10 @@ Finder is a full-stack web application inspired by Airbnb, built using the MEN (
 
 ## 📸 Screenshots
 
-![Image_1](.ss/ss1.png)
-![Image_2](.ss/ss2.png)
-![Image_3](.ss/ss3.png)
-![Image_4](.ss/ss4.png)
+[Image_1](.ss/ss1.png)
+[Image_2](.ss/ss2.png)
+[Image_3](.ss/ss3.png)
+[Image_4](.ss/ss4.png)
 
 ## ✨ Key Features
 
@@ -27,6 +27,7 @@ Finder is a full-stack web application inspired by Airbnb, built using the MEN (
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB (with Mongoose and MongoDB Atlas)
 - **View Engine:** EJS (Embedded JavaScript), ejs-mate (for layouts)
+- **Mapping:** Maptiler (for interactive maps)
 - **Authentication:** Passport.js, Express-Session
 - **Image Storage:** Cloudinary, Multer
 - **Styling:** Bootstrap, CSS
