@@ -139,8 +139,38 @@ body{
 
 /* show page */
 
+.show-card {
+    border: none !important;
+    overflow: hidden !important;
+    border-radius: 1rem !important;
+    padding: 0 !important;
+}
+
 .show-img{
-    height: 30vh;
+    height: 25vh;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 1rem;
+    margin: 0 !important;
+}
+
+/* Responsive design for show page */
+@media (max-width: 768px) {
+    .show-card {
+        margin: 0 !important;
+    }
+    
+    .show-img {
+        height: 25vh;
+        border-radius: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .show-img {
+        height: 20vh;
+    }
 }
 
 .btns{
