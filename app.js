@@ -108,7 +108,8 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render("error.ejs" ,{err});
 })
 
-//we are starting our server at port 8080
-app.listen(8080,()=>{
-    console.log("server is listening to port 8080");
+//we are starting our server at port 8080 or process.env.PORT for production
+const port = process.env.PORT || 8080;
+app.listen(port,()=>{
+    console.log(`server is listening to port ${port}`);
 })
