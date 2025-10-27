@@ -21,6 +21,14 @@ module.exports.index = async (req, res) => {
     res.render("listings/index.ejs", { allListings });
 };
 
+module.exports.privacy = (req, res) => {
+    res.render("./listings/privacy.ejs");
+};
+
+module.exports.terms = (req, res) => {
+    res.render("./listings/terms.ejs");
+};
+
 module.exports.newRoute = (req,res)=>{
     res.render("./listings/new.ejs");
 };

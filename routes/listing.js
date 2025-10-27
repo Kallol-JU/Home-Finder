@@ -10,6 +10,7 @@ const {storage} = require('../cloudConfig.js');
 const upload = multer({storage});
 
 
+
 router
 .route("/")
 .get(wrapAsync(listingControllers.index)) //index route
@@ -19,6 +20,15 @@ router
 
 //new route
 router.get("/new" , isLoggedIn , listingControllers.newRoute) //new is written after show route but put upper bcs if not put upper, then the app would consider new as id, and throw err
+
+
+//privacy route
+router.get("/privacy", listingControllers.privacy);
+
+//terms route
+router.get("/terms", listingControllers.terms);
+
+
 
 router
 .route("/:id")
@@ -30,5 +40,7 @@ router
 
 //edit route
 router.get("/:id/edit", isLoggedIn , isOwner, listingControllers.editListings);
+
+
 
 module.exports = router;
