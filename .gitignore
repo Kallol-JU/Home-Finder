@@ -1,1 +1,2 @@
-MONGO_URL="mongodb+srv://mukherjeekallol42_db_user:txmOejXVc73pipgv@cluster0.e54tfwp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+.env
+.node_modules/

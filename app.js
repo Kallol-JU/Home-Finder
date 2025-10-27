@@ -11,6 +11,7 @@ const listRouter = require("./routes/listing.js");
 const reviewRouter  =require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const session = require("express-session");
+const mongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const passport = require("passport");
 const localStrategy = require("passport-local");
@@ -38,8 +39,22 @@ app.engine("ejs" , ejsMate);
 app.use(express.static(path.join(__dirname,"/public"))); // for serving static files
 
 
+//using mongo store for session storage
+const store = mongoStore.create({
+  mongoUrl : MONGO_URL,
+  crypto: {
+    secret: process.env.SECRET,
+  },
+  touchAfter: 24 * 60 * 60 // time period in seconds
+});
+
+store.on("error" , err =>{
+  console.log("Session store error!" , err);
+});
+
 const sessionOptions = {
-  secret : "kallolSDE@Google",
+  store : store,
+  secret : process.env.SECRET,
   resave : false, 
   saveUninitialized : true,
   cookie : {
@@ -49,10 +64,6 @@ const sessionOptions = {
   }
 }
 
-//creating basic api
-// app.get("/", (req,res)=>{
-//     res.send("hi, i am root page");
-// });
 
 //first defining session, then only i can implement passport
 app.use(session(sessionOptions));

@@ -3,12 +3,22 @@ const Listing = require("../models/listing.js");
 const mapKey = process.env.MAP_TOKEN;
 
 
-
-
-
-module.exports.index = async(req,res)=>{
-    const allListings = await Listing.find({}); //this listing.find() means this is the method to call the documents in the data via the model
-    res.render("./listings/index.ejs" , {allListings});
+module.exports.index = async (req, res) => {
+    const { q } = req.query;
+    let filter = {};
+    if (q) {
+        filter = {
+            // '$or' searches multiple fields
+            $or: [
+                // Checking if 'q' is in the title/country/location
+                { title: { $regex: q, $options: "i" } },
+                { country: { $regex: q, $options: "i" } },
+                { location: { $regex: q, $options: "i" } }
+            ]
+        };
+    };
+    const allListings = await Listing.find(filter);
+    res.render("listings/index.ejs", { allListings });
 };
 
 module.exports.newRoute = (req,res)=>{
