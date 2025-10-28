@@ -3,40 +3,46 @@
 <style>
   #filter{
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem 0;
   }
   .filters{
-    margin-right: 1.5rem;
+    margin-right: 0.5rem;
     text-align: center;
-    margin-top: 2rem;
     opacity: 0.7;
     cursor: pointer;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
   .filters:hover{
     opacity:1;
   }
 
   .filters p{
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    margin: 0.2rem 0;
   }
 
   .tax-toggle {
     border : 1px solid black;
     border-radius: 1rem;
-    height: 3.5rem;
-    padding: 1rem;
-    /* margin-left: 1rem; */
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
-    margin-top: 0.5rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 0.8rem;
   }
 
   @media (max-width: 768px) {
     #filter {
       flex-wrap: nowrap; 
       overflow-x: auto;  
-
+      gap: 0.5rem;
       -ms-overflow-style: none;  
       scrollbar-width: none;     
     }
@@ -48,6 +54,16 @@
     .filters,
     .tax-toggle {
       flex-shrink: 0;
+    }
+
+    .filters p {
+      font-size: 0.6rem;
+    }
+
+    .tax-toggle {
+      font-size: 0.7rem;
+      height: 2rem;
+      padding: 0.3rem 0.6rem;
     }
   }
 
@@ -65,65 +81,70 @@
 <body>
    <div id="filter">
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('trending')">
       <div><i class="fa-solid fa-fire"></i></div>
       <p>Trending</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('rooms')">
       <div><i class="fa-solid fa-bed"></i></div>
       <p>Rooms</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('iconic-cities')">
       <div><i class="fa-solid fa-mountain-city"></i></div>
       <p>Iconic Cities</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('mountains')">
       <div><i class="fa-solid fa-mountain"></i></div>
       <p>Mountains</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('castles')">
       <div><i class="fa-brands fa-fort-awesome"></i></div>
       <p>Castles</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('amazing-pools')">
       <div><i class="fa-solid fa-person-swimming"></i></div>
       <p>Amazing Pools</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('camping')">
       <div><i class="fa-solid fa-tent"></i></div>
       <p>Camping</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('farms')">
       <div><i class="fa-solid fa-cow"></i></div>
       <p>Farms</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('arctic')">
       <div><i class="fa-solid fa-snowman"></i></div>
       <p>Arctic</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('bed-and-breakfast')">
       <div><i class="fa-solid fa-mug-saucer"></i></div>
       <p>Bed and Breakfast</p>
     </div>
 
-    <div class="filters">
+    <div class="filters" onclick="applyFilter('domes')">
       <div><i class="fa-solid fa-igloo"></i></div>
       <p>Domes</p>
+    </div>
+
+    <div class="filters" onclick="clearFilters()" style="background-color: #fe424d; color: white; border-radius: 0.5rem; padding: 0.3rem 0.6rem; font-size: 0.6rem;">
+      <div><i class="fa-solid fa-times" style="font-size: 0.6rem;"></i></div>
+      <p style="font-size: 0.6rem; margin: 0.1rem 0;">Clear</p>
     </div>
 
     <div class="tax-toggle">
       <div class="form-check-reverse form-switch">
         <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
+        <label class="form-check-label" for="flexSwitchCheckDefault" style="font-size: 0.8rem;">Display total after taxes</label>
       </div>
     </div>
   </div>
@@ -159,8 +180,48 @@
         info.style.display = "none";
       }
     }
-
   })
+
+  // Function to apply filters
+  function applyFilter(filterType) {
+    // Get current URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // Set the filter parameter
+    urlParams.set('filter', filterType);
+    
+    // Remove any existing search query when applying filters
+    urlParams.delete('q');
+    
+    // Redirect to the same page with the filter parameter
+    window.location.href = '/listings?' + urlParams.toString();
+  }
+
+  // Function to clear all filters
+  function clearFilters() {
+    // Redirect to the listings page without any parameters
+    window.location.href = '/listings';
+  }
+
+  // Add visual feedback for active filter
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeFilter = urlParams.get('filter');
+    
+    if (activeFilter) {
+      // Find the filter button that matches the active filter
+      const filterButtons = document.querySelectorAll('.filters');
+      filterButtons.forEach(button => {
+        const onclick = button.getAttribute('onclick');
+        if (onclick && onclick.includes(`'${activeFilter}'`)) {
+          button.style.backgroundColor = '#fe424d';
+          button.style.color = 'white';
+          button.style.borderRadius = '1rem';
+          button.style.padding = '0.5rem 1rem';
+        }
+      });
+    }
+  });
 </script>
 
 
